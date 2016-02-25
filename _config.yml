@@ -1,10 +1,12 @@
-# Dependencies
-markdown:         redcarpet
-highlighter:      pygments
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge
 
 # Permalinks
 permalink:        pretty
-relative_permalinks: true
 
 # Setup
 title:            'Online tukan sanctuary'
@@ -22,3 +24,5 @@ paginate:         5
 
 github:
   repo:           https://github.com/andigena
+
+gems: [jekyll-paginate]

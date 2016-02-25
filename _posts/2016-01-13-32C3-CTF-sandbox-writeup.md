@@ -72,7 +72,7 @@ After initialization, `parent` enters a loop. It reads on the **p0** pipe, when 
 
 The code that `trusted` executes (seen below) is a simple loop of waiting for signaling on the **p1** pipe, filling up the registers from the syscall struct in mmap2, executing the syscall, storing the return value and signaling `sandboxee` via **p3**. The code seems robust, even considering our access to the address space in which it executes. It doesn't use anything of interest from writable locations, doesn't call library functions, only syscalls, and exits without returning on a failure.
 
-```nasm
+{% highlight nasm %}
 loc_4015BB:                             
                 lea     r15, mmap2
                 mov     r15, [r15]
@@ -118,7 +118,7 @@ loc_40165C:                             ; CODE XREF: create_child_thread_loopit+
                 mov     rax, 0E7h
                 mov     rdi, 1
                 syscall                 ; exit_group
-```
+{% endhighlight %}
 
 ## Sandboxee
 
@@ -133,7 +133,7 @@ An obvious way to break out would be to modify the code of the `trusted` thread.
 The decompiled code of the handler can be seen below. The check for the path containing **proc** should hint at a possible direction to take: somehow bypass it and open **/proc/self/mem** for writing. This would allow us to modify the code of `trusted` from `sandboxee` and break out. 
 
 
-```C
+{% highlight C %}
 signed __int64 __fastcall handler_of_open_and_chdir_syscall_reqs(syscall *sc)
 {
   syscall *v1; // rbx@1
@@ -177,7 +177,8 @@ LABEL_7:
   v1->rdi_ = (__int64)(mmap2 + 56);
   return 1LL;
 }
-```
+{% endhighlight %}
+
 
 Looking at the code, there is a rather simple buffer overflow. The handler checks that rdi (the path arg of the syscall) points inside the mmap1 region but at the end of the function copies it to `mmap2+56` via strcpy. Both mmap1 and mmap2 are 4096 bytes big, so we could make the filename point to `mmap1+16` for example and have a long string starting there. Since mmap2 is mmapped right after mmap1, it will be placed right under it in memory, meaning we overflow back into mmap1. At first, this doesn't buy us much, considering that `parent` has already made a copy of the syscall struct from mmap1. What we get however is the ability to modify the end of the path, since mmap1 is writable by us and the path overflows into it. So by requesting a **chdir** into a long path consisting only of '/.'s, the checks will pass and we might be able to append /proc to the path before `trusted` executes the syscall. But we don't even need to win a race, since `trusted` and `sandboxee` share file descriptors and `parent` lets **pipe**, **dup** and **dup2** through without validation. This means we can take over the pipe on which `trusted` waits for the signal from `parent` to execute a syscall and trigger it at our leisure.
 
@@ -185,7 +186,7 @@ Once we have **/proc/self/mem** open for writing, we modify `trusted` to simply 
 
 [5]: /public/sandbox/sandbox_overflow.py
 
-```
+{% highlight bash %}
 tukan@tukan-VirtualBox:/media/sf_shared/ctf/32c3_15/sandbox# python /media/sf_shared/exploits/32ccc15/sandbox_overflow.py 
 [+] Opening connection to 136.243.194.42 on port 1024: Done
 Please enter your shellcode, end with 8x NOP (\x90
@@ -209,7 +210,7 @@ $ ./read_flag
 Flag: 32C3_aihee0Laeleekah9De5eipah7ethepie
 
 $ exit
-```
+{% endhighlight %}
 
 # Solution II: a race condition
 
