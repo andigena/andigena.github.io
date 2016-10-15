@@ -20,7 +20,7 @@ We touch on the following subjects:
 * **forcing calloc to return unitialized memory**. By setting the `IS_MMAPPED` bit of a free chunk, `calloc` may return unitialized memory.
 * **Reverse House of Mind**, mixing chunks of other arenas into the bins of the main arena.
 * **an overview of some of the heap-related challenges from the HITCON 2016 qualifier**.
-* **conjuring addresses for leaks**. Free chunks may have pointers to the heap and libc and we also look at the other possible directions between some interesting memory ares (binary, heap, libc, stack) for leaks.
+* **conjuring addresses for leaks**. Free chunks may have pointers to the heap and libc and we also look at the other possible directions between some interesting memory areas (binary, heap, libc, stack) for leaks.
 * **corruption targets in libc**. We have leaked the address of libc, now what?
 * **surviving free on controlled data**.
 
