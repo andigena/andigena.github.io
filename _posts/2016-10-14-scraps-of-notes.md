@@ -148,6 +148,7 @@ if (__builtin_expect (((block | total_size) & (GLRO (dl_pagesize) - 1)) != 0, 0)
 {% endhighlight %}
 
 The only thing needed is the offset of our chunk into its page, then it's possible to use the `prev_size` field to point `block` outside the mapped ranges and ensure page-alignment and the `size` field to make the `total_size` value small. Since there's no check on the return value of `munmap`, we're good to go. 
+
 * passing the region off as a fastbin-sized chunk. This has the same requirements as the fake chunk in the House of Spirit:
     * the chunksize has to be between `MINSIZE` (32) and `global_max_fast` (128), while also being 16-byte aligned. The `PREV_INUSE` bit doesn't matter, while the other two should be unset.
     * the size of the next chunk has to be bigger than 16 and smaller than `av->system_mem` (at least 128KB).
