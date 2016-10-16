@@ -134,7 +134,7 @@ Libc has a lot of interesting targets for corruption:
 
 There are cases when you already did all the necessary corruptions but there are still a couple of free calls, possibly on corrupted chunks, before control flow is hijacked. Setting up a region on which free will operate without crashing isn't a really difficult task:
 
-* creating a **fake mmapped chunk**. As we discussed in the [first episode]({% post_url 2016-07-27-munmap-madness %}), `_int_free` is completely bypassed for chunks with the `IS_MMAPPED` bit set. As a remainder, here is how the address to munmap is calculated: 
+* creating a **fake mmapped chunk**. As we discussed in the [first episode]({% post_url 2016-07-27-munmap-madness %}), `_int_free` is completely bypassed for chunks with the `IS_MMAPPED` bit set. As a reminder, here is how the address to munmap is calculated: 
 
 {% highlight C %}
 uintptr_t block = (uintptr_t) p - p->prev_size;
