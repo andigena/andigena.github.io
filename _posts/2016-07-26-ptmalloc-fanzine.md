@@ -18,6 +18,7 @@ The zine deals with some peculiarities of ptmalloc meta-data attacks, mostly fro
 * **episode 01**: [munmap madness]({% post_url 2016-07-27-munmap-madness %})
 * **episode 02**: [fastbin fever]({% post_url 2016-09-04-fastbin-fever %})
 * **episode 03**: [scraps of notes on ptmalloc metadata corruptions]({% post_url 2016-10-14-scraps-of-notes %})
+* **episode 04**: [once upon a realloc()]({% post_url 2016-11-03-once-upon-a-realloc %})
 
 
 # External resources
