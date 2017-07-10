@@ -8,7 +8,7 @@ tags:
 - glibc
 ---
 
-This post is intended to be the parent-page of the ptmalloc fanzine episodes, as well as a collection of resources related to glibc heap meta-data corruptions. 
+This post is intended to be the parent-page of the ptmalloc fanzine episodes, as well as a collection of resources related to glibc heap meta-data corruptions.
 
 
 # The zine
@@ -19,6 +19,7 @@ The zine deals with some peculiarities of ptmalloc meta-data attacks, mostly fro
 * **episode 02**: [fastbin fever]({% post_url 2016-09-04-fastbin-fever %})
 * **episode 03**: [scraps of notes on ptmalloc metadata corruptions]({% post_url 2016-10-14-scraps-of-notes %})
 * **episode 04**: [once upon a realloc()]({% post_url 2016-11-03-once-upon-a-realloc %})
+* **episode 05**: [thread local caching in glibc malloc]({% post_url 2017-07-08-tcache %})
 
 
 # External resources
